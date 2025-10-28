@@ -6,15 +6,10 @@ public class ShootBullet : MonoBehaviour
     public Transform shootPoint;
     public float shootForce = 1500f;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
-
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Time.time % 1f < Time.deltaTime)
+        if (Time.time % 1f < Time.fixedDeltaTime)
         {
             Shoot();
         }
@@ -30,5 +25,4 @@ public class ShootBullet : MonoBehaviour
         bulletRb.AddForce(shootPoint.forward * shootForce);
         Destroy(bullet, 5f); // Destroy the bullet after 5 seconds to clean up
     }
-
 }
