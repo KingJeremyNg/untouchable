@@ -17,6 +17,21 @@ public class BulletCollision : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        print("Bullet collided with " + collision.gameObject.name);
+        // Iterate to the highest parent
+        Transform current = collision.gameObject.transform;
+        while (current.parent != null)
+        {
+            current = current.parent;
+        }
+
+        // Disable animator if the collided object is the player
+        if (current.gameObject.name == "Player")
+        {
+            Animator animator = current.gameObject.GetComponent<Animator>();
+            if (animator != null)
+            {
+                animator.enabled = false;
+            }
+        }
     }
 }
