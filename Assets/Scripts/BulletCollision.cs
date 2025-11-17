@@ -4,6 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(MeshCollider))]
 public class BulletCollision : MonoBehaviour
 {
+    public float force = 150f;
     [Header("Components")]
     private Rigidbody rb;
     private MeshCollider col;
@@ -28,10 +29,12 @@ public class BulletCollision : MonoBehaviour
         if (current.gameObject.name == "Player")
         {
             Animator animator = current.gameObject.GetComponent<Animator>();
-            if (animator != null)
-            {
-                animator.enabled = false;
-            }
+            Rigidbody playerRb = collision.gameObject.transform.GetComponent<Rigidbody>();
+            // Disable the animator to stop player animations
+            animator.enabled = false;
+            // Apply an impulse force to the player in the direction of the bullet's velocity
+            playerRb.AddForce(rb.linearVelocity.normalized * force, ForceMode.Impulse);
+            Destroy(gameObject);
         }
     }
 }
