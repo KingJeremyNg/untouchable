@@ -26,15 +26,15 @@ public class BulletCollision : MonoBehaviour
         }
 
         // Disable animator if the collided object is the player
-        if (current.gameObject.name == "Player")
-        {
-            Animator animator = current.gameObject.GetComponent<Animator>();
-            Rigidbody playerRb = collision.gameObject.transform.GetComponent<Rigidbody>();
-            // Disable the animator to stop player animations
-            animator.enabled = false;
-            // Apply an impulse force to the player in the direction of the bullet's velocity
-            playerRb.AddForce(rb.linearVelocity.normalized * force, ForceMode.Impulse);
-            Destroy(gameObject);
-        }
+        // if (current.gameObject.name == "Player")
+        // {
+        //     Animator animator = current.gameObject.GetComponent<Animator>();
+        //     Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();
+        //     // Disable the animator to stop player animations
+        //     animator.enabled = false;
+        //     // Apply an impulse force to the player in the direction of the bullet's velocity
+        //     playerRb.AddForce(rb.linearVelocity.normalized * force, ForceMode.Impulse);
+        //     Destroy(gameObject);
+        // }
     }
 }

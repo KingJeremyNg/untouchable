@@ -3,25 +3,32 @@ using UnityEngine;
 public class Follow : MonoBehaviour
 {
     public Transform target;
-    // public Transform directionTarget;
+    public Transform LookAtTarget;
     public Vector3 offset = new Vector3(0, 3, -4); // Default offset
     public float smoothSpeed = 0.125f; // For smooth follow
+    public float angleOffset = -5f; // Angle offset for looking upwards
 
     void LateUpdate()
     {
         if (target == null) return;
 
-        // For direct follow (no smoothing)
-        transform.position = target.position + offset;
+        // Get the desired position with offset
+        Vector3 desiredPosition = target.position + offset;
 
-        // For smooth follow
-        // Vector3 desiredPosition = target.position + offset;
-        // Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-        // transform.position = smoothedPosition;
+        // Apply rotation to offset
+        Vector3 rotatedOffset = Quaternion.Euler(0f, 0f, 210f) * LookAtTarget.rotation * offset;
 
-        // Calculate the offset in the direction directionTarget is facing
-        // Vector3 rotatedOffset = directionTarget.rotation * offset;
-        // transform.position = target.position + rotatedOffset;
-        // transform.LookAt(target);
+        // Smoothly interpolate to the desired position
+        Vector3 smoothedPosition = Vector3.Lerp(transform.position, target.position + rotatedOffset, smoothSpeed);
+
+        // Set the position and look at the target
+        transform.position = smoothedPosition;
+        if (LookAtTarget != null)
+            transform.LookAt(LookAtTarget);
+        else
+            transform.LookAt(target);
+
+        // Apply angle offset
+        transform.rotation *= Quaternion.Euler(angleOffset, 0f, 0f);
     }
 }
