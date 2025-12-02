@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     public Transform OpponentTransform;
     public bool inputReady = false;
     public bool isAlive = true;
+    private float defaultY = 7.901f;
 
     void Awake()
     {
@@ -19,10 +20,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        defaultY = transform.position.y;
     }
 
-    void resetAnimatorBools()
+    public void resetAnimatorBools()
     {
+        print("Resetting animator bools");
         animator.SetBool("Up", false);
         animator.SetBool("Down", false);
         animator.SetBool("Left", false);
@@ -31,6 +34,20 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("UpLeft", false);
         animator.SetBool("DownRight", false);
         animator.SetBool("DownLeft", false);
+        print("Setting inputReady to true");
+        inputReady = true;
+    }
+
+    public void SetInputReadyTrue()
+    {
+        print("Setting inputReady to true");
+        inputReady = true;
+    }
+
+    public void SetInputReadyFalse()
+    {
+        print("Setting inputReady to false");
+        inputReady = false;
     }
 
     void animate(Vector2 movementInput)
@@ -46,7 +63,7 @@ public class PlayerController : MonoBehaviour
             
             // Convert to 8 directions (45 degree segments)
             int direction = Mathf.RoundToInt(angle / 45f) % 8;
-            
+
             switch (direction)
             {
                 case 0: cardinal = Vector2.right; animator.SetBool("Right", true); break;
@@ -65,10 +82,13 @@ public class PlayerController : MonoBehaviour
     {
         if (!isAlive) return;
         if (animator.enabled == false) isAlive = false;
+
+        // if animation is playing, return
         if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
         {
             return;
         }
+
         Vector3 direction = OpponentTransform.position - transform.position;
         direction.y = 0; // Keep rotation on horizontal plane
         if (direction.sqrMagnitude > 0.01f)
@@ -76,11 +96,11 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 100f);
         }
+        transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
+        
         if (!inputReady) return;
         // Process movementInput (e.g., apply to character movement)
         Vector2 movementInput = moveAction.ReadValue<Vector2>();
-        resetAnimatorBools();
         animate(movementInput);
-        // inputReady = false;
     }
 }

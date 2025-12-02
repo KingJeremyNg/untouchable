@@ -7034,7 +7034,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5884405469530735240, guid: 3d6c7430bd21a564489df266ea8864e1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5884405469530735240, guid: 3d6c7430bd21a564489df266ea8864e1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -7949,7 +7949,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5884405469530735240, guid: 3d6c7430bd21a564489df266ea8864e1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5884405469530735240, guid: 3d6c7430bd21a564489df266ea8864e1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -10375,7 +10375,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5884405469530735240, guid: 3d6c7430bd21a564489df266ea8864e1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5884405469530735240, guid: 3d6c7430bd21a564489df266ea8864e1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -21664,7 +21664,7 @@ MeshCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4870282204881835761}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 705945e4f67bdd9469ed115009587ec5, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
