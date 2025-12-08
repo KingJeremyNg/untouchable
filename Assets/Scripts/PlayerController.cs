@@ -7,9 +7,8 @@ public class PlayerController : MonoBehaviour
     public InputActionAsset inputActionAsset;
     private InputAction moveAction;
     public Transform OpponentTransform;
-    public bool inputReady = false;
+    public bool inputReady = true;
     public bool isAlive = true;
-    private float defaultY = 7.901f;
 
     void Awake()
     {
@@ -20,12 +19,15 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
-        defaultY = transform.position.y;
+    }
+
+    public void setIdleFalse()
+    {
+        animator.SetBool("Idle", false);
     }
 
     public void resetAnimatorBools()
     {
-        print("Resetting animator bools");
         animator.SetBool("Up", false);
         animator.SetBool("Down", false);
         animator.SetBool("Left", false);
@@ -34,19 +36,11 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("UpLeft", false);
         animator.SetBool("DownRight", false);
         animator.SetBool("DownLeft", false);
-        print("Setting inputReady to true");
-        inputReady = true;
-    }
-
-    public void SetInputReadyTrue()
-    {
-        print("Setting inputReady to true");
         inputReady = true;
     }
 
     public void SetInputReadyFalse()
     {
-        print("Setting inputReady to false");
         inputReady = false;
     }
 
@@ -78,17 +72,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    float getGroundY()
+    {
+        Ray rayDown = new Ray(transform.position, Vector3.down);
+        RaycastHit hit;
+        int groundLayer = LayerMask.GetMask("Ground");
+        if (Physics.Raycast(rayDown, out hit, Mathf.Infinity, groundLayer))
+        {
+            return hit.point.y;
+        }
+        Ray rayUp = new Ray(transform.position, Vector3.up);
+        if (Physics.Raycast(rayUp, out hit, Mathf.Infinity, groundLayer))
+        {
+            return hit.point.y;
+        }
+        return transform.position.y;
+    }
+
     void Update()
     {
         if (!isAlive) return;
         if (animator.enabled == false) isAlive = false;
+        if (!inputReady) return;
 
-        // if animation is playing, return
-        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {
-            return;
-        }
-
+        // Adjust rotation to face opponent
         Vector3 direction = OpponentTransform.position - transform.position;
         direction.y = 0; // Keep rotation on horizontal plane
         if (direction.sqrMagnitude > 0.01f)
@@ -96,9 +103,9 @@ public class PlayerController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(direction);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 100f);
         }
-        transform.position = new Vector3(transform.position.x, defaultY, transform.position.z);
-        
-        if (!inputReady) return;
+        float groundY = getGroundY();
+        transform.position = new Vector3(transform.position.x, groundY, transform.position.z);
+
         // Process movementInput (e.g., apply to character movement)
         Vector2 movementInput = moveAction.ReadValue<Vector2>();
         animate(movementInput);

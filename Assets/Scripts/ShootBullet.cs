@@ -13,23 +13,17 @@ public class ShootBullet : MonoBehaviour
 
     void Start()
     {
-        shootFromOffset = shootPoint.forward * 0.17f + shootPoint.up * 0.07f;
-        spawnPosition = shootPoint.position + shootFromOffset;
         lineRenderer = GetComponent<LineRenderer>();
     }
     
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Time.time % 1f < Time.fixedDeltaTime)
-        {
-            Vector3 randomShootTarget = GetRandomShootTarget();
-            bulletPath(randomShootTarget);
-            Shoot(randomShootTarget);
-        }
+        shootFromOffset = shootPoint.forward * 0.17f + shootPoint.up * 0.07f;
+        spawnPosition = shootPoint.position + shootFromOffset;
     }
 
-    Vector3 GetRandomShootTarget()
+    public Vector3 GetRandomShootTarget()
     {
         float randomX = Random.Range(-shootTarget.localScale.x / 2, shootTarget.localScale.x / 2);
         float randomY = Random.Range(-shootTarget.localScale.y / 2, shootTarget.localScale.y / 2);
@@ -37,7 +31,7 @@ public class ShootBullet : MonoBehaviour
         return randomPosition;
     }
 
-    void bulletPath(Vector3 randomShootTarget)
+    public LineRenderer bulletPath(Vector3 randomShootTarget)
     {
         Vector3 shootDirection = (randomShootTarget - spawnPosition).normalized;
 
@@ -54,19 +48,34 @@ public class ShootBullet : MonoBehaviour
         }
 
         if (isHit) {
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, spawnPosition);
-            lineRenderer.SetPosition(1, randomShootTarget);
+            GameObject lineObj = Instantiate(new GameObject("BulletPath"), spawnPosition, Quaternion.identity);
+            LineRenderer newLine = lineObj.AddComponent<LineRenderer>();
+            newLine.startWidth = lineRenderer.startWidth;
+            newLine.endWidth = lineRenderer.endWidth;
+            newLine.material = lineRenderer.material;
+            newLine.startColor = lineRenderer.startColor;
+            newLine.endColor = lineRenderer.endColor;
+            newLine.positionCount = 2;
+            newLine.SetPosition(0, spawnPosition);
+            newLine.SetPosition(1, randomShootTarget);
+            return newLine;
         }
         else {
-            lineRenderer.positionCount = 2;
-            lineRenderer.SetPosition(0, spawnPosition);
-            lineRenderer.SetPosition(1, randomShootTarget + (randomShootTarget - spawnPosition).normalized * 100f);
+            GameObject lineObj = Instantiate(new GameObject("BulletPath"), spawnPosition, Quaternion.identity);
+            LineRenderer newLine = lineObj.AddComponent<LineRenderer>();
+            newLine.startWidth = lineRenderer.startWidth;
+            newLine.endWidth = lineRenderer.endWidth;
+            newLine.material = lineRenderer.material;
+            newLine.startColor = lineRenderer.startColor;
+            newLine.endColor = lineRenderer.endColor;
+            newLine.positionCount = 2;
+            newLine.SetPosition(0, spawnPosition);
+            newLine.SetPosition(1, randomShootTarget + (randomShootTarget - spawnPosition).normalized * 100f);
+            return newLine;
         }
-        
     }
 
-    void Shoot(Vector3 randomShootTarget)
+    public void Shoot(Vector3 randomShootTarget)
     {
         Quaternion rotation = shootPoint.rotation * Quaternion.Euler(90, 0, 0);
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, rotation);
