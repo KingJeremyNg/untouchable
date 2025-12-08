@@ -58,6 +58,7 @@ public class ShootBullet : MonoBehaviour
             newLine.positionCount = 2;
             newLine.SetPosition(0, spawnPosition);
             newLine.SetPosition(1, randomShootTarget);
+            Destroy(lineObj, 5f);
             return newLine;
         }
         else {
@@ -71,6 +72,7 @@ public class ShootBullet : MonoBehaviour
             newLine.positionCount = 2;
             newLine.SetPosition(0, spawnPosition);
             newLine.SetPosition(1, randomShootTarget + (randomShootTarget - spawnPosition).normalized * 100f);
+            Destroy(lineObj, 5f);
             return newLine;
         }
     }

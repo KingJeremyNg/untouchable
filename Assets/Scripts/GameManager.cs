@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(GameState newState)
     {
         currentState = newState;
-        print("Game State changed to: " + newState.ToString());
+        // print("Game State changed to: " + newState.ToString());
         switch (newState)
         {
             case GameState.MainMenu:
@@ -64,6 +64,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 // Handle game over state
+                Time.timeScale = 1f;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(newState), newState, null);
@@ -149,7 +150,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator shootDelay(int i) {
         float startTime = Time.time;
-        while (Time.time - startTime < 1f)
+        while (Time.time - startTime < 0.5f)
         {
             yield return null; // wait for next frame
         }
