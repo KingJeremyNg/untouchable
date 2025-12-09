@@ -21,6 +21,12 @@ public class ShootBullet : MonoBehaviour
     {
         shootFromOffset = shootPoint.forward * 0.17f + shootPoint.up * 0.07f;
         spawnPosition = shootPoint.position + shootFromOffset;
+        // if (Time.time % 1f < Time.fixedDeltaTime)
+        // {
+        //     Vector3 randomShootTarget = GetRandomShootTarget();
+        //     bulletPath(randomShootTarget);
+        //     Shoot(randomShootTarget);
+        // }
     }
 
     public Vector3 GetRandomShootTarget()

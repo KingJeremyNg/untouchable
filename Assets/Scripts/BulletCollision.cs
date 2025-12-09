@@ -5,6 +5,7 @@ using UnityEngine;
 public class BulletCollision : MonoBehaviour
 {
     public float force = 150f;
+    public bool enableCollision = true;
     [Header("Components")]
     private Rigidbody rb;
     private MeshCollider col;
@@ -26,7 +27,7 @@ public class BulletCollision : MonoBehaviour
         }
 
         // Disable animator if the collided object is the player
-        if (current.gameObject.name == "Player")
+        if (current.gameObject.name == "Player" && enableCollision)
         {
             Animator animator = current.gameObject.GetComponent<Animator>();
             Rigidbody playerRb = collision.gameObject.GetComponent<Rigidbody>();

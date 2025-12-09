@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Prediction:
                 // Handle prediction state
+                break; // FOR DEMO PURPOSES
                 handlePrediction();
                 break;
             case GameState.Dodge:
